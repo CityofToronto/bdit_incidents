@@ -15,8 +15,15 @@ Functions are interperated then run in the shell interactively
 - Returns type of emergency services were at the scene
 
 ###def offset():
+- Returns df['OffsetDirection'] if it exists
+- Otherwise, extracts offset information from 
 
 ###def atStreeet():
+- Returns df['AtStreet'] if it exists
+- Otherwise:
+  - Use str.split() on the substring of df['EventDescription'] after the df['offset'], this returns the list of words after the offset
+  - Take the first two elements of this list, will either be ['roadname','type'] (ex: ['bay','st']) or ['road', 'name'] (ex: ['york', 'mills']), doesn't matter we don't need the strings to be exact for geotagging (more on this later)
+  - Concatenate these two list elements into one string and drop the semicolon that often occurs at the end of the second element
 
 ###def dropDir():
 
