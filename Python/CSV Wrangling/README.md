@@ -1,5 +1,7 @@
 #CSV Wrangling
 
+Relevant orly cover to start: http://imgur.com/a/KMAJc
+
 ##clean_csv.py
 
 Functions are interperated then run in the shell interactively
@@ -56,7 +58,9 @@ Just a continuation of `clean_csv.py`, I got a bit excited with the Lat/Long tag
 - Same as `clean()`, calls helper functions
 
 ###`def nLanes(df)`
+- Extracts number of lanes blocked from `df['EventDescription']`
+- Returns as type `int`, 99 implies all lanes, 89 ramp, 79 shoulder
 
 ###`def incType(df)`
-
+- Categorizes incidents into maintenance, stopped, and collision
 
