@@ -34,3 +34,11 @@ data as well as volume data to understand the aggregate vehicle-delay.
 1. Import CSV to python as pandas dataframe and run clean_csv.py
 2. Remove any unnecessary columns (ex: individual date and time columns bc there is a single datetime column)
 3. Convert lat/long to postGIS point and tag incident to closest TMC
+
+## Key Innovations
+- `df['column'] = df.apply(lambda x: function(x), axis=1)`: by far the fastest way to apply functions to whole dataframes 
+- Using `ST_DISTANCE()` combined with `DISTINCT ON` and `ORDER BY` to find the closest segment to each incident
+
+## Next Steps
+- Develop delay due to incident heuristic
+- Recreate bluetooth-TMC reference table using a more precise method
