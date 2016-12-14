@@ -42,8 +42,7 @@ def clean(dfIn):
     df['Offset'] = df.apply(lambda x: offset(x), axis=1)
     df['Street2'] = df.apply(lambda x: atStreet(x), axis=1)
     df['Street2'] = df.apply(lambda x: dropDir(x), axis=1)
-    
-    #
+
     
     df = latLong(df)    
     
@@ -90,6 +89,11 @@ def offset(df):
         return 'at'
 
 def atStreet(df):
+    '''
+    (pd.DataFrame) -> str
+    
+    extracts the at street information from df['EventDescription'] 
+    '''
     dirs = ['southbound','sb', 's.b.','northbound','nb', 'n.b.','eastbound','eb', 'e.b.','westbound','wb', 'w.b.']
     if (df['AtStreet'] == '' and df['OffsetDirection'] == ''):
         try:
@@ -110,6 +114,7 @@ def atStreet(df):
                 except IndexError:
                     return 'ERROR'
             
+            # index starting at 0 here since there is no 'of' when 'at' is the offset
             elif (df['Offset'] == 'at'):
                 tempList = df['EventDescription'][df['EventDescription'].index(df['Offset']) + len(df['Offset']): ].split()[0:2]
                 try:
