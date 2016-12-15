@@ -12,11 +12,12 @@ def similar(a, b):
 
 def clean(dfIn):
     """
+    (pd.DataFrame) -> float
+    
     -> Drop all rows with no description
     -> Force event description, offset, atsteet to lowercase
-    -> Get offset for events that don't already have an offset field
-    -> 
-    -> Divide into 3 types of df.EventDescription
+    -> Create and fill respondents, offset, and street2 columns
+    -> Return percentage of rows succesfully parsedn
     """
     df = dfIn.copy(deep = True) #new dataframe
     nRowsOriginal = len(df.index)
@@ -159,7 +160,7 @@ def dropDir(df):
     changes 'NA' to 'at'
     '''
     dirs = ['north','n','south','s','east','e','west','w']
-    #drop the direction component if it is in the 
+    #drop the direction component
     try:
         if df['Street2'].split()[-1] in dirs:
             return df['Street2'][:-1]
@@ -177,10 +178,11 @@ def levCol(df, string):
     
 #use np.isnan(lat) NOT lat == np.nan
 def latLong(df):
+    '''
+    This function can be improved, currently the only one that requires looping through each row
+    '''
     for i in df.index:
         if np.isnan(df['I_Lattitude'][i]):
-            print(i)
-            print('in the if statement!!')
             #create column that is lev ratio of streetname compared to current street
             df['Lev'] = df.apply(lambda x: levCol(x,df['Street2'][i]), axis=1)
             
