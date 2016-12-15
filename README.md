@@ -16,13 +16,14 @@ Ultimately we want the following information:
 ### 2. Comparing with Traffic Speeds
 By matching incident location and time to traffic data from 3rd party vendors and bluetooth we want to estimate 
 the delay from loss of capacity due to an incident. This requires merging the incident data with traffic speed 
-data as well as volume data to understand the aggregate vehicle-delay. 
+data as well as volume data to understand the aggregate vehicle-delay. Ideally we will be able to isolate the delay due to incidents alone. 
 
 ## Contents 
 
 ### Python
 - CSV Wrangling: Extracts infromation from EventDescription column and creates new columns for this information
 - Plotting: Initial visualization project for Jesse's presentations
+- Incident Delay: Isolating delay due to incidents
 
 ### SQL
 - Tags incidents to closest TMC so INRIX data can be used
