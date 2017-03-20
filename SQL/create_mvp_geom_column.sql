@@ -1,2 +1,2 @@
-﻿ALTER TABLE incidents.mvp_subset ADD COLUMN geom GEOMETRY(POINT, 4326);
-UPDATE incidents.mvp_subset SET geom = ST_SetSRID(ST_MakePoint(i_longitude,i_lattitude),4326);
+﻿ALTER TABLE incidents.mvp_2016 ADD COLUMN geom GEOMETRY(POINT, 4326);
+UPDATE incidents.mvp_2016 SET geom = ST_SetSRID(ST_MakePoint("I_Longitude","I_Lattitude"),4326);
