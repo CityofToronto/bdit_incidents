@@ -10,10 +10,8 @@ from sqlalchemy import create_engine
 NE = [u'A',u'B',u'B1',u'C',u'D',u'E',u'F',u'G',u'H',u'I',u'J',u'K']
 SW = NE[::-1]
 
-engine = create_engine('postgresql://'\
-'dolejarz:changethis@10.160.12.47:5432/bigdata')
-sday = datetime.date(2015,11,1)
-NEdebug = ['B','B1','C']
+dbStr = ''
+engine = create_engine(dbStr)
 
 def readSegments(inSegments, startDate, engine):
     '''
@@ -180,10 +178,9 @@ def plotDelay(dfList, startDatetime, endDatetime, delay, segList):
         return None
     
     startTime = startDatetime.time()
-    print startTime
     endTime = endDatetime.time()
-    print endTime
-    
+
+   
     fig, ax = plt.subplots(2, 1, figsize=(8,8), sharex=False, dpi=300)
     ax[0].set_title(str(segList) + ' - ' + str(startDatetime.date()) + ' - ' + str(int(delay)) + ' vehicle-hours of delay')
     
@@ -205,15 +202,16 @@ def main():
     dfInc = readInc(engine)
     dfInc = dfInc[(dfInc['EventLocation'] == 'DVP') | (dfInc['EventLocation'] == 'FGG')]
     
+    #take only 2016 data
     dfInc['StartDateTime'] = pd.to_datetime(dfInc['StartDateTime'])
     dfInc['EndDateTime'] = pd.to_datetime(dfInc['EndDateTime'])
-    dfInc = dfInc[(dfInc['StartDateTime'] > datetime.date(2016,1,1)) & (dfInc['EndDateTime'] < datetime.date(2016,1,6))]
-    dfInc['segList'] = dfInc.apply(lambda x: createSegmentListPandas(x,engine), axis=1)
+    dfInc = dfInc[(dfInc['StartDateTime'] > datetime.date(2016,1,1)) & (dfInc['EndDateTime'] < datetime.date(2017,1,1))]
     
 
+    dfInc['segList'] = dfInc.apply(lambda x: createSegmentListPandas(x,engine), axis=1)
+    
     delay = 0.
-    
-    
+
     for startDatetime, endDatetime, segListStr in zip(dfInc['StartDateTime'], dfInc['EndDateTime'], dfInc['segList']):
         segList = ast.literal_eval(segListStr)
         dfList = readSegments(segList, startDatetime, engine)       
