@@ -9,4 +9,4 @@ Folders:
 - Machine Learning
   - Uses `sklearn` to create a Decision tree that is able to classify incidents as major or not major
 - Incident Delay
-  - Will calcculates delay in vehicle-hours by combinging incident, bluetooth, and volume datasets
+  - Calculates delay in vehicle-hours by combinging incident, bluetooth, and volume datasets
