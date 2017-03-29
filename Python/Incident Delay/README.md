@@ -30,5 +30,6 @@ This program calculates incident delay due to major incidents by performing the 
 | Oct |40|21665|541|
 | Nov |25|8530|337|
 | Dec |20|7512|375|
+|**Total**|**295**|**149351**|**506**|
 
 
