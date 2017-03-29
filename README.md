@@ -11,6 +11,7 @@ Ultimately we want the following information:
  - [x] geographic location
  - [x] type of incident
  - [x] lane closures
+ - [x] vehicle-hours of delay due to incidents
  - [ ] updates for finer-grained analyses of impacts
  
 ### 2. Comparing with Traffic Speeds
