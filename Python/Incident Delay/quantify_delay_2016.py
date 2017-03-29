@@ -23,7 +23,7 @@ def readSegments(inSegments, startDate, engine):
     if inSegments == []:
         return None
         
-    con = engine.connect()
+    
     dfList = []
 
     startDate = startDate.date()
@@ -82,8 +82,6 @@ def readSegments(inSegments, startDate, engine):
         pt.reset_index(inplace = True)
         baselineListBinned.append(pt)
   
-    con.close()
-    
     return [dfList,baselineListBinned]
 
 
@@ -142,7 +140,19 @@ def readInc(engine):
     sqlStr = 'SELECT * FROM incidents.mvp_2016 WHERE ("MIR" = \'Yes\' AND tmc != \'\')'
     return pandasql.read_sql(sql = sqlStr, con = engine)
 
-def integrateDelay(dfList, startDatetime, endDatetime, segLisst):
+def readVolume(startPoint, endPoint, hour, engine):
+    sqlStr = 'Select "volume" from incidents.volumes '\
+             'WHERE ( "startpointname" = %(start)s '\
+             'AND "endpointname" = %(end)s '\
+             'AND "hour" = %(hour)s)'
+    df = pandasql.read_sql(sql=sqlStr, 
+                           params = {'start':startPoint,
+                                     'end':endPoint,
+                                     'hour':hour},
+                           con=engine)
+    return df.volume[0]
+
+def integrateDelay(dfList, startDatetime, endDatetime, segList, engine):
     
     if dfList == None:
         return 0.
@@ -165,7 +175,12 @@ def integrateDelay(dfList, startDatetime, endDatetime, segLisst):
         
         y = y1 - y2 
         
-        y = y * 1800. * (5./60.) * 3. *(1./3600.) # 1800 veh/hr * 5/60 mins * 3 lanes * 1hr/3600s
+        volume = readVolume(segList[i], 
+                            segList[i+1], 
+                            startDatetime.time().hour, 
+                            engine)
+                            
+        y = y * volume * (5./60.) * (1./3600.) # volume * 5/60 mins * 1hr/3600s
         
         delay += np.sum(y)
 
@@ -179,10 +194,14 @@ def plotDelay(dfList, startDatetime, endDatetime, delay, segList):
     
     startTime = startDatetime.time()
     endTime = endDatetime.time()
-
    
     fig, ax = plt.subplots(2, 1, figsize=(8,8), sharex=False, dpi=300)
-    ax[0].set_title(str(segList) + ' - ' + str(startDatetime.date()) + ' - ' + str(int(delay)) + ' vehicle-hours of delay')
+    ax[0].set_title(str(segList) 
+                    + ' - ' 
+                    + str(startDatetime.date()) 
+                    + ' - ' 
+                    + str(int(delay)) 
+                    + ' vehicle-hours of delay')
     
     for i in range(len(dfList[0])):
         ax[i].plot(dfList[0][i]['datetime_bin'], dfList[0][i]['tt'],'k') #specific day
@@ -197,32 +216,36 @@ def plotDelay(dfList, startDatetime, endDatetime, delay, segList):
     
       
 def main():
+    con = engine.connect()
     
     #read from db and take only DVP and FGG 
-    dfInc = readInc(engine)
+    dfInc = readInc(con)
     dfInc = dfInc[(dfInc['EventLocation'] == 'DVP') | (dfInc['EventLocation'] == 'FGG')]
     
     #take only 2016 data
     dfInc['StartDateTime'] = pd.to_datetime(dfInc['StartDateTime'])
     dfInc['EndDateTime'] = pd.to_datetime(dfInc['EndDateTime'])
-    dfInc = dfInc[(dfInc['StartDateTime'] > datetime.date(2016,1,1)) & (dfInc['EndDateTime'] < datetime.date(2017,1,1))]
-    
+    dfInc = dfInc[(dfInc['StartDateTime'] > datetime.date(2016,12,1)) & (dfInc['EndDateTime'] < datetime.date(2017,1,1))]
 
-    dfInc['segList'] = dfInc.apply(lambda x: createSegmentListPandas(x,engine), axis=1)
+    #create the segList column
+    dfInc['segList'] = dfInc.apply(lambda x: createSegmentListPandas(x,con), axis=1)
     
     delay = 0.
-
+    
     for startDatetime, endDatetime, segListStr in zip(dfInc['StartDateTime'], dfInc['EndDateTime'], dfInc['segList']):
         segList = ast.literal_eval(segListStr)
-        dfList = readSegments(segList, startDatetime, engine)       
-        integral = integrateDelay(dfList, startDatetime, endDatetime, segList)
+        dfList = readSegments(segList, startDatetime, con)       
+        integral = integrateDelay(dfList, startDatetime, endDatetime, segList, con)
         #plotDelay(dfList, startDatetime, endDatetime, integral, segList)
         delay += integral
     
+    con.close()
+    engine.dispose()
+    
     return delay
-'''
+
 if __name__ == '__main__':
     main()
-'''
+
     
 
