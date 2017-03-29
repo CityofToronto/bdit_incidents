@@ -14,3 +14,21 @@ This program calculates incident delay due to major incidents by performing the 
 4. Calculate the area between the current day and the baseline for the time the incident is occuring, multiply this by the volume during this time as determined in the previous step
 5. Sum the delay caluculated for each incident to determine the total delay
 
+## 2016 Results
+
+| Month | No. Of MIR| Veh-hours of delay  |
+|---|---:|---:|
+| Jan |23|12797|
+| Feb |26|6216|
+| Mar |20|3286|
+| Apr |27|16043|
+| May |18|25643|
+| Jun |22|13059|
+| Jul |18|10986|
+| Aug |25|14044|
+| Sep |31|9670|
+| Oct |40|21665|
+| Nov |25|8530|
+| Dec |20|7512|
+
+
