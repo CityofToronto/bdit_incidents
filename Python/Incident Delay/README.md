@@ -16,19 +16,19 @@ This program calculates incident delay due to major incidents by performing the 
 
 ## 2016 Results
 
-| Month | No. Of MIR| Veh-hours of delay  |
-|---|---:|---:|
-| Jan |23|12797|
-| Feb |26|6216|
-| Mar |20|3286|
-| Apr |27|16043|
-| May |18|25643|
-| Jun |22|13059|
-| Jul |18|10986|
-| Aug |25|14044|
-| Sep |31|9670|
-| Oct |40|21665|
-| Nov |25|8530|
-| Dec |20|7512|
+| Month | No. of MIR| Veh-hours of delay  | Veh-hours/MIR |
+|---|---:|---:| ---:|
+| Jan |23|12797|556|
+| Feb |26|6216|239|
+| Mar |20|3286|164|
+| Apr |27|16043|594|
+| May |18|25643|1424|
+| Jun |22|13059|593|
+| Jul |18|10986|610|
+| Aug |25|14044|561|
+| Sep |31|9670|311|
+| Oct |40|21665|541|
+| Nov |25|8530|337|
+| Dec |20|7512|375|
 
 
