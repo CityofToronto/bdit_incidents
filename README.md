@@ -33,12 +33,12 @@ data as well as volume data to understand the aggregate vehicle-delay. Ideally w
 - Previous student's code
 
 ## Tables in `incidents` schema
-- bt
-  - Associates TMCs with bluetooth segments
-- mvp_2016
-  - Incidents table from RESCU used in `quantify_delay_2016.py`
-- volumes
-  - Volume data for each bluetooth segment created using Sunny's programs
+### bt
+- Associates TMCs with bluetooth segments
+### mvp_2016
+- Incidents table from RESCU used in `quantify_delay_2016.py`
+### volumes
+ - Volume data for each bluetooth segment created using Sunny's programs
 
 ## Current workflow
 1. Import CSV to python as pandas dataframe and run `clean_csv.py`
