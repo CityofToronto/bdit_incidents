@@ -1,6 +1,8 @@
 # Intelligent Transportation Systems for Incident Management
 *U.S. Department of Transportation*
 
+Available [here](https://ntl.bts.gov/lib/jpodocs/brochure/14288.htm)
+
 This report analyses various approaches to incident management undertaken by cities across the United States and summarizes their effectiveness. In the context of BDIT's incident analysis, we are mostly concerned with the impact of freeway service patrol programs on incident clearance times. The City of Toronto already has a well developed indicent detection program on its expressways. As such, this report review will focus exclusively on that aspect of incident management.
 
 ## Cities Implementing FSP
@@ -14,3 +16,5 @@ The dollar-value of benefit of these entries was determined by analyzing the red
 |Ft. Lauderdale, FL| $2.5 | 24/7 | 11 vehicles | 21:1 |
 |Tenessee| $5.6 | Varies | 69 Trucks | Unavailable|
 |Denver, CO| $1.5 | 06:30-09:00, 15:30-18:30 Weekdays | 2 Trucks | 23:1 |
+
+Implementing FSP also has the effect of improving motorists' perception on the safety of their highways, as the infrastructure is highly visible. 
