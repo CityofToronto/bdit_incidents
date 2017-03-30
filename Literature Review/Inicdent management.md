@@ -5,6 +5,8 @@ This report analyses various approaches to incident management undertaken by cit
 
 ## Cities Implementing FSP
 
+The dollar-value of benefit of these entries was determined by analyzing the reduction in vehicle-hours of travel after FSP programs were implemented. A rate of $10/vehicle-hour was [used](http://www.itsbenefits.its.dot.gov/its/benecost.nsf/0/BE1E4488FF0F3E5B852569610051E29F). It is important to note that many of these studies were performed in the 1990s. 
+
 | Location | Operating Cost ($M/year) | Hours of Operation | Fleet Size | Benefit-Cost Ratio|
 |----------|--------------------------|--------------------|------------|-------------------|
 |Los Angeles, CA| $20.5 | 06:00-19:00 (weekdays) 10:00-18:30 (weekends) | 150 trucks | 8:1 |
