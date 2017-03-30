@@ -1,5 +1,7 @@
 # Incident Delay
 
+Professional photoshop to start: http://imgur.com/a/KBzMx
+
 We want to be able to attribute spikes in travel time to traffic incidents. As a first cut, it may be best to create some sort of basic incident delay determining heuristic to attribute delay due to incidents for any year. 
 
 ## `quantify_delay.py` 
