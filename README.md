@@ -43,7 +43,7 @@ data as well as volume data to understand the aggregate vehicle-delay. Ideally w
 ## Current workflow
 1. Import CSV to python as pandas dataframe and run `clean_csv.py`
 2. Remove any unnecessary columns (ex: individual date and time columns bc there is a single datetime column)
-3. Convert lat/long to postGIS point and tag incident to closest TMC
+3. Convert lat/long to postGIS point and tag incident to closest TMC and corresponding bluetooth segment
 4. Establish volume profiles for each bluetooth segment (with Sunny's help)
 5. Run `quantify_delay_2016.py`
 
