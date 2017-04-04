@@ -34,4 +34,19 @@ This program calculates incident delay due to major incidents by performing the 
 | Dec |20|7512|375|
 |**Total**|**295**|**149351**|**506**|
 
+| Month | No. of Collisions| Veh-hours of delay | Veh-hours/collision |
+|---|---:|---:| ---:|
+| Jan |98|21981|224|
+| Feb |93|13972|150|
+| Mar |117|12602|107|
+| Apr |95|22869|240|
+| May |121|29692|245|
+| Jun |109|28327|259|
+| Jul |132|25168|190|
+| Aug |154|29357|202|
+| Sep |157|22054|140|
+| Oct |160|39217|245|
+| Nov |121|23291|192|
+| Dec |110|23521|213|
+|**Total**|**1459**|**292057**|**200**|
 
