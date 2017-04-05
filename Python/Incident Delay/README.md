@@ -18,6 +18,7 @@ This program calculates incident delay due to major incidents by performing the 
 
 ## 2016 Results
 
+### Major Incidents
 | Month | No. of MIR| Veh-hours of delay  | Veh-hours/MIR |
 |---|---:|---:| ---:|
 | Jan |23|12797|556|
@@ -34,6 +35,7 @@ This program calculates incident delay due to major incidents by performing the 
 | Dec |20|7512|375|
 |**Total**|**295**|**149351**|**506**|
 
+### Collisions
 | Month | No. of Collisions| Veh-hours of delay | Veh-hours/collision |
 |---|---:|---:| ---:|
 | Jan |98|21981|224|
@@ -50,6 +52,7 @@ This program calculates incident delay due to major incidents by performing the 
 | Dec |110|23521|213|
 |**Total**|**1459**|**292057**|**200**|
 
+### All Incidents
 | Month | No. of Incidents| Veh-hours of delay | Veh-hours/Inc |
 |---|---:|---:| ---:|
 | Jan |486|29148|60|
