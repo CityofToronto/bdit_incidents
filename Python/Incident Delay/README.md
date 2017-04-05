@@ -50,3 +50,19 @@ This program calculates incident delay due to major incidents by performing the 
 | Dec |110|23521|213|
 |**Total**|**1459**|**292057**|**200**|
 
+| Month | No. of Incidents| Veh-hours of delay | Veh-hours/Inc |
+|---|---:|---:| ---:|
+| Jan |486|29148|60|
+| Feb |462|27855|60|
+| Mar |515|27250|52|
+| Apr |435|37477|86|
+| May |532|75317|141|
+| Jun |518|46936|90|
+| Jul |544|37359|69|
+| Aug |574|39386|69|
+| Sep |568|50949|90|
+| Oct |516|56236|109|
+| Nov |431|44977|104|
+| Dec |334|39156|117|
+|**Total**|**5915**|**511975**|**86**|
+
