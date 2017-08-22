@@ -5,12 +5,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pandas.io.sql as pandasql
 import ast
+import ConfigParser
 from sqlalchemy import create_engine
 
+plt.style.use('ggplot')
 NE = [u'A',u'B',u'B1',u'C',u'D',u'E',u'F',u'G',u'H',u'I',u'J',u'K']
 SW = NE[::-1]
 
-dbStr = ''
+config = ConfigParser.ConfigParser()
+config.read("C:\Users\dolejar\default.cfg")
+dbset = config._sections['DBSETTINGS']
+dbStr = 'postgresql://'+dbset['user']+':'+dbset['password']+'@'+dbset['host']+':'+dbset['port']+'/'+dbset['database']
 engine = create_engine(dbStr)
 
 def readSegments(inSegments, startDate, engine):
@@ -137,7 +142,8 @@ def readInc(engine):
     '''
     Return dataframe of incidents that are major and have an assoicated tmc
     '''
-    sqlStr = 'SELECT * FROM incidents.mvp_2016 WHERE ("MIR" = \'Yes\' AND tmc != \'\')'
+    #sqlStr = 'SELECT * FROM incidents.mvp_2016 WHERE ("MIR" = \'Yes\' AND tmc != \'\')'
+    sqlStr = 'SELECT * FROM incidents.mvp_2016 WHERE tmc != \'\''
     return pandasql.read_sql(sql = sqlStr, con = engine)
 
 def readVolume(startPoint, endPoint, hour, engine):
@@ -195,21 +201,34 @@ def plotDelay(dfList, startDatetime, endDatetime, delay, segList):
     startTime = startDatetime.time()
     endTime = endDatetime.time()
    
-    fig, ax = plt.subplots(2, 1, figsize=(8,8), sharex=False, dpi=300)
+    fig, ax = plt.subplots(2, 1, figsize=(22,16), sharex=False, dpi=300)
+    #fig.text(0.0, 0.5, 'Travel Time (minutes)', va='center', rotation='vertical')
+    #plt.setp(ax, xticks=[datetime.time(0,0,0),datetime.time(1,0,0),datetime.time(2,0,0),datetime.time(3,0,0),datetime.time(4,0,0),datetime.time(5,0,0),datetime.time(6,0,0),datetime.time(7,0,0),datetime.time(8,0,0),datetime.time(9,0,0),datetime.time(10,00,00),datetime.time(11,00,00),datetime.time(12,00,00),datetime.time(13,00,00),datetime.time(14,00,00),datetime.time(15,00,00),datetime.time(16,00,00),datetime.time(17,00,00),datetime.time(18,00,00),datetime.time(19,00,00),datetime.time(20,00,00),datetime.time(21,00,00),datetime.time(22,00,00),datetime.time(23,00,00)])
+    plt.setp(ax, xticks=[datetime.time(0,0,0),datetime.time(6,0,0),datetime.time(12,00,00),datetime.time(18,00,00)])
+        
+    '''
     ax[0].set_title(str(segList) 
                     + ' - ' 
                     + str(startDatetime.date()) 
                     + ' - ' 
                     + str(int(delay)) 
                     + ' vehicle-hours of delay')
-    
+    '''
+    ax[0].set_title('Incident Segment')
+    ax[1].set_title('Upstream Segment')    
     for i in range(len(dfList[0])):
-        ax[i].plot(dfList[0][i]['datetime_bin'], dfList[0][i]['tt'],'k') #specific day
-        ax[i].plot(dfList[1][i]['datetime_bin'], dfList[1][i]['tt'],'b') #baseline
-        ax[i].axvline(x=startTime,color='red')
-        ax[i].axvline(x=endTime,color='green')
+        ax[i].plot(dfList[0][i]['datetime_bin'], dfList[0][i]['tt']/60., color='#094c82',lw=3) #specific day
+        ax[i].plot(dfList[1][i]['datetime_bin'], dfList[1][i]['tt']/60.,'k',lw=3) #baseline
+        #ax[i].fill_between(dfList[0][i]['datetime_bin'], 
+        #                   dfList[0][i]['tt']/60., 
+        #                   dfList[1][i]['tt']/60.)
+        ax[i].axvline(x=startTime,color='#f2766d',lw=3)
+        ax[i].axvline(x=endTime,color='#f2766d',lw=3)
+        ax[i].set_xlim([datetime.time(00,00,00),datetime.time(23,55,00)])
+        ax[i].set_xlabel('')
     
     #plt.savefig(str(segList) + ' - ' + str(startDatetime.date()) + ' - ' + str(int(delay)) + ' vehicle-hours of delay'+'.png',format='png')
+    plt.savefig('incident_poster_plot2.png',format='png')    
     plt.show()
     
     return None
@@ -218,34 +237,71 @@ def plotDelay(dfList, startDatetime, endDatetime, delay, segList):
 def main():
     con = engine.connect()
     
+    print '1'
     #read from db and take only DVP and FGG 
     dfInc = readInc(con)
+    dfInc['Delay'] = None
     dfInc = dfInc[(dfInc['EventLocation'] == 'DVP') | (dfInc['EventLocation'] == 'FGG')]
     
+    #dfInc = dfInc[df['EventDescription'].str.contains("collision")]
+    
+    print '2'
     #take only 2016 data
     dfInc['StartDateTime'] = pd.to_datetime(dfInc['StartDateTime'])
     dfInc['EndDateTime'] = pd.to_datetime(dfInc['EndDateTime'])
-    dfInc = dfInc[(dfInc['StartDateTime'] > datetime.date(2016,12,1)) & (dfInc['EndDateTime'] < datetime.date(2017,1,1))]
+    dfInc = dfInc[(dfInc['StartDateTime'] > datetime.date(2016,2,1)) & (dfInc['EndDateTime'] < datetime.date(2017,1,1))]
 
+    print '3'
     #create the segList column
     dfInc['segList'] = dfInc.apply(lambda x: createSegmentListPandas(x,con), axis=1)
     
     delay = 0.
     
+    '''
     for startDatetime, endDatetime, segListStr in zip(dfInc['StartDateTime'], dfInc['EndDateTime'], dfInc['segList']):
         segList = ast.literal_eval(segListStr)
         dfList = readSegments(segList, startDatetime, con)       
         integral = integrateDelay(dfList, startDatetime, endDatetime, segList, con)
         #plotDelay(dfList, startDatetime, endDatetime, integral, segList)
         delay += integral
-    
+        
+    print '4'
+    for i in [dfInc.index[0]]:
+        print dfInc['StartDateTime'][i]
+        segList = ast.literal_eval(dfInc['segList'][i])
+        dfList = readSegments(segList, dfInc['StartDateTime'][i], con)       
+        integral = integrateDelay(dfList, dfInc['StartDateTime'][i], dfInc['EndDateTime'][i], segList, con)
+        dfInc['Delay'][i] = integral
+        plotDelay(dfList, dfInc['StartDateTime'][i], dfInc['EndDateTime'][i], integral, segList)
+        delay += integral
+    '''
+    #dfInc.to_csv('feb-decInc.csv')
     con.close()
     engine.dispose()
     
-    return delay
+    return dfInc
 
+
+def plotLoop(dfInc, index, engine):
+    con = engine.connect()
+    delay = 0.
+    for i in [dfInc.index[index]]:
+        print dfInc['StartDateTime'][i]
+        segList = ast.literal_eval(dfInc['segList'][i])
+        dfList = readSegments(segList, dfInc['StartDateTime'][i], con)       
+        integral = integrateDelay(dfList, dfInc['StartDateTime'][i], dfInc['EndDateTime'][i], segList, con)
+        dfInc['Delay'][i] = integral
+        plotDelay(dfList, dfInc['StartDateTime'][i], dfInc['EndDateTime'][i], integral, segList)
+        delay += integral
+    con.close()
+    engine.dispose()
+    return 
+    
+
+'''
 if __name__ == '__main__':
     main()
+'''
 
     
 
